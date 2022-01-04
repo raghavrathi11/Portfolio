@@ -8,9 +8,9 @@ From [portfolio project]..coviddeaths
 Where continent is not null
 Order by 3, 4
 
---Select *
---From [portfolio project]..covidvaccinations
---Order by 3, 4
+-- Select *
+-- From [portfolio project]..covidvaccinations
+-- Order by 3, 4
 
 -- Select Data that we are going to be using
 
@@ -70,14 +70,14 @@ where continent is not null
 -- Group by date
 order by 1,2
 
---Join Covid Deaths and Vaccination tables
+-- Join Covid Deaths and Vaccination tables
 Select *
 from [portfolio project]..coviddeaths dea
 Join [portfolio project]..covidvaccinations vac
 	On dea.location = vac.location
 	and dea.date = vac.date
 
---Total Population vs Vaccinations
+-- Total Population vs Vaccinations
 
 Select dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations
 , SUM(convert(bigint,vac.new_vaccinations)) OVER (Partition by dea.location ORDER by dea.location, dea.date) as RollingPeopleVaccinated
