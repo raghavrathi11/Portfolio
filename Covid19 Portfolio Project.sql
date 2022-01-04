@@ -1,3 +1,7 @@
+/*
+Covid 19 Data Exploration 
+Skills used: Joins, CTE's, Temp Tables, Windows Functions, Aggregate Functions, Creating Views, Converting Data Types
+*/
 
 Select *
 From [portfolio project]..coviddeaths
@@ -16,7 +20,7 @@ Where continent is not null
 Order by 1, 2
 
 
--- Looking at the Total Cases vs Total deaths
+-- Total Cases vs Total deaths
 -- Shows likelihood of dying if you contract COVID-19 in India
 
 Select location, date, total_cases, total_deaths, (total_deaths/total_cases)*100 as DeathPercentage
@@ -25,7 +29,7 @@ Where location = 'India' and continent is not null
 Order by 1, 2
 
 
--- Looking at Total Cases vs Population
+-- Total Cases vs Population
 -- Shows what percentage of the Indian population has contracted COVID-19
 
 Select location, date, population, total_cases, (total_cases/population)*100 as PercentPopulationInfected
@@ -33,7 +37,7 @@ From [portfolio project]..coviddeaths
 Where location = 'India'
 Order by 1, 2
 
--- Looking at countries with Highest Infection Rate compared to Population
+-- Countries with Highest Infection Rate compared to Population
 
 Select location, population, max(total_cases) as PeakInfectionCount, max((total_cases/population))*100 as PercentPopulationInfected
 From [portfolio project]..coviddeaths
@@ -41,7 +45,7 @@ Where continent is not null
 Group by location, population
 Order by PercentPopulationInfected desc
 
--- Looking at countries with Highest Death Count
+-- Countries with the Highest Death Count
 
 Select location, max(cast (total_deaths as int)) as TotalDeathCount
 From [portfolio project]..coviddeaths
@@ -49,7 +53,7 @@ Where continent is not null
 Group by location
 Order by TotalDeathCount desc
 
--- Looking at continents with Highest Death Count
+-- Continents with Highest Death Count
 
 Select continent, max(cast (total_deaths as int)) as TotalDeathCount
 From [portfolio project]..coviddeaths
@@ -65,7 +69,7 @@ where continent is not null
 -- Group by date
 order by 1,2
 
---Looking at Total Population vs Vaccinations
+--Total Population vs Vaccinations
 
 Select dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations
 , SUM(convert(bigint,vac.new_vaccinations)) OVER (Partition by dea.location ORDER by dea.location, dea.date) as RollingPeopleVaccinated
@@ -91,7 +95,7 @@ Select*, (RollingPeopleVaccinated/Population)*100
 from Pop_Vs_Vac
 
 
--- Creating view to store data for later visualizations
+-- Creating Views to store data in for later visualizations
 
 Create View TotalPopulationvsVaccination as
 Select dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations
