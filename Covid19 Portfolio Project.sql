@@ -69,6 +69,13 @@ where continent is not null
 -- Group by date
 order by 1,2
 
+--Join Covid Deaths and Vaccination tables
+Select *
+from [portfolio project]..coviddeaths dea
+Join [portfolio project]..covidvaccinations vac
+	On dea.location = vac.location
+	and dea.date = vac.date
+
 --Total Population vs Vaccinations
 
 Select dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations
