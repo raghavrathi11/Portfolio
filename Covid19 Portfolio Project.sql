@@ -45,6 +45,12 @@ Where continent is not null
 Group by location, population
 Order by PercentPopulationInfected desc
 
+Select location, population,date, max(total_cases) as PeakInfectionCount, max((total_cases/population))*100 as PercentPopulationInfected
+From [portfolio project]..coviddeaths
+Where continent is not null
+Group by location, population, date
+Order by PercentPopulationInfected desc
+
 -- Countries with the Highest Death Count
 
 Select location, max(cast (total_deaths as int)) as TotalDeathCount
@@ -55,10 +61,10 @@ Order by TotalDeathCount desc
 
 -- Continents with Highest Death Count
 
-Select continent, max(cast (total_deaths as int)) as TotalDeathCount
+Select location, max(cast (total_deaths as int)) as TotalDeathCount
 From [portfolio project]..coviddeaths
-Where continent is not null
-Group by continent
+Where continent is null and location not in ('World','Upper middle income','High income','Lower middle income','European Union','Low income','International')
+Group by location
 Order by TotalDeathCount desc
 
 -- Global Numbers
