@@ -64,6 +64,7 @@ Order by TotalDeathCount desc
 -- Global Numbers
 
 Select sum(new_cases) as Total_Cases, sum(cast(new_deaths as int)) as Total_Deaths, sum(cast(new_deaths as int))/sum(new_cases)*100 as DeathPercentage
+-- cast as int to avoid error
 From [portfolio project]..coviddeaths
 where continent is not null
 -- Group by date
@@ -80,6 +81,7 @@ Join [portfolio project]..covidvaccinations vac
 
 Select dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations
 , SUM(convert(bigint,vac.new_vaccinations)) OVER (Partition by dea.location ORDER by dea.location, dea.date) as RollingPeopleVaccinated
+-- Need to order by location and date otherwise it will just add up the total by location
 From [portfolio project]..coviddeaths dea
 Join [portfolio project]..covidvaccinations vac
 On dea.location = vac.location
